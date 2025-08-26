@@ -1,0 +1,12 @@
+flask==3.0.0
+flask-cors==4.0.0
+python-dotenv==1.0.0
+requests==2.31.0
+openai==1.100.2
+langchain==0.3.27
+langchain-openai==0.3.30
+langchain-ollama==0.3.6
+speechrecognition==3.14.3
+numpy==2.2.6
+opencv-python==4.12.0.88
+pydantic==2.11.7

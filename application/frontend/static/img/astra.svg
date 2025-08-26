@@ -1,0 +1,24 @@
+<svg width="120" height="80" viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg">
+  <!-- Robot Head -->
+  <ellipse cx="60" cy="20" rx="12" ry="8" fill="#4cc9f0" stroke="#1e3a8a" stroke-width="1.5"/>
+  <circle cx="56" cy="18" r="2" fill="#1e3a8a"/>
+  <circle cx="64" cy="18" r="2" fill="#1e3a8a"/>
+  <circle cx="56" cy="18" r="0.5" fill="white"/>
+  <circle cx="64" cy="18" r="0.5" fill="white"/>
+  <line x1="68" y1="16" x2="70" y2="14" stroke="#1e3a8a" stroke-width="1.5" stroke-linecap="round"/>
+  <circle cx="70" cy="14" r="1" fill="#1e3a8a"/>
+  
+  <!-- Human Hand -->
+  <path d="M 45 35 Q 48 32 50 35 Q 52 38 55 36 Q 58 34 60 36 Q 62 38 65 36 Q 68 34 70 36 Q 72 38 75 36" 
+        fill="#4cc9f0" stroke="#1e3a8a" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M 45 35 Q 48 38 50 40 Q 52 42 55 40 Q 58 38 60 40 Q 62 42 65 40 Q 68 38 70 40 Q 72 42 75 40" 
+        fill="#4cc9f0" stroke="#1e3a8a" stroke-width="1.5" stroke-linejoin="round"/>
+  
+  <!-- Medical Cross -->
+  <rect x="78" y="32" width="8" height="8" rx="1" fill="#10b981" stroke="#047857" stroke-width="1.5"/>
+  <rect x="81" y="29" width="2" height="14" rx="1" fill="#10b981" stroke="#047857" stroke-width="1.5"/>
+  <rect x="74" y="36" width="14" height="2" rx="1" fill="#10b981" stroke="#047857" stroke-width="1.5"/>
+  
+  <!-- ASTRA Text -->
+  <text x="60" y="65" text-anchor="middle" font-family="Inter, sans-serif" font-size="16" font-weight="600" fill="#1e3a8a">ASTRA</text>
+</svg>

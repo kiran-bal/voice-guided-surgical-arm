@@ -1,0 +1,11 @@
+Action-based commands with handedness:
+a0l, a0r - Incision without object (left/right handed)
+a1l, a1r - Incision with object (left/right handed)
+b0l, b0r - Stitch without object (left/right handed)
+b1l, b1r - Stitch with object (left/right handed)
+d0l, d0r - Grasp without object (left/right handed)
+d1l, d1r - Grasp with object (left/right handed)
+e0l, e0r - Cut without object (left/right handed)
+e1l, e1r - Cut with object (left/right handed)
+Fallback command:
+x - No valid action detected

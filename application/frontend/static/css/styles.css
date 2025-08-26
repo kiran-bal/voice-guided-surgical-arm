@@ -1,0 +1,702 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #0a0f2c 0%, #1b1f3b 100%);
+    min-height: 100vh;
+    color: white;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Add subtle star effect to background */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(2px 2px at 20px 30px, #ffffff20, transparent),
+        radial-gradient(2px 2px at 40px 70px, #ffffff15, transparent),
+        radial-gradient(1px 1px at 90px 40px, #ffffff10, transparent),
+        radial-gradient(1px 1px at 130px 80px, #ffffff15, transparent),
+        radial-gradient(2px 2px at 160px 30px, #ffffff20, transparent);
+    background-repeat: repeat;
+    background-size: 200px 100px;
+    animation: twinkle 20s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes twinkle {
+    0% { opacity: 0.3; }
+    50% { opacity: 0.7; }
+    100% { opacity: 0.3; }
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+}
+
+/* Header */
+.header {
+    text-align: center;
+    margin-bottom: 6rem;
+    padding-top: 2rem;
+}
+
+.logo-container {
+    margin-bottom: 2rem;
+}
+
+.logo {
+    width: 120px;
+    height: 80px;
+    filter: drop-shadow(0 0 20px rgba(76, 201, 240, 0.3));
+    transition: filter 0.3s ease;
+}
+
+.logo:hover {
+    filter: drop-shadow(0 0 30px rgba(76, 201, 240, 0.5));
+}
+
+.headline {
+    font-size: 2.5rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, #4cc9f0 0%, #7209b7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 30px rgba(76, 201, 240, 0.3);
+    margin-bottom: 1rem;
+}
+
+/* Main content */
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 2rem;
+}
+
+/* Voice section */
+.voice-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+    max-width: 600px;
+}
+
+/* Microphone button */
+.mic-button-container {
+    position: relative;
+    display: inline-block;
+}
+
+.mic-button {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(135deg, #7209b7 0%, #4cc9f0 100%);
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 
+        0 0 30px rgba(76, 201, 240, 0.4),
+        0 0 60px rgba(114, 9, 183, 0.2),
+        inset 0 0 20px rgba(255, 255, 255, 0.1);
+    animation: gentle-pulse 3s ease-in-out infinite;
+}
+
+.mic-button:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 
+        0 0 40px rgba(76, 201, 240, 0.6),
+        0 0 80px rgba(114, 9, 183, 0.3),
+        inset 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.mic-button:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.mic-button.recording {
+    background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+    box-shadow: 
+        0 0 40px rgba(239, 68, 68, 0.6),
+        0 0 80px rgba(249, 115, 22, 0.3),
+        inset 0 0 20px rgba(255, 255, 255, 0.2);
+    animation: recording-pulse 1s ease-in-out infinite;
+}
+
+.mic-icon {
+    font-size: 2rem;
+}
+
+@keyframes gentle-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+}
+
+@keyframes recording-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* Recording animation */
+.recording-animation {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+}
+
+.wave-container {
+    position: relative;
+    width: 200px;
+    height: 200px;
+}
+
+.wave {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid rgba(239, 68, 68, 0.3);
+    border-radius: 50%;
+    animation: wave 2s infinite;
+}
+
+.wave1 {
+    width: 140px;
+    height: 140px;
+    animation-delay: 0s;
+}
+
+.wave2 {
+    width: 160px;
+    height: 160px;
+    animation-delay: 0.5s;
+}
+
+.wave3 {
+    width: 180px;
+    height: 180px;
+    animation-delay: 1s;
+}
+
+.wave4 {
+    width: 200px;
+    height: 200px;
+    animation-delay: 1.5s;
+}
+
+@keyframes wave {
+    0% {
+        transform: translate(-50%, -50%) scale(0.8);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 0;
+    }
+}
+
+/* Transcription */
+.transcription-container {
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+.transcription-text {
+    font-size: 1.2rem;
+    color: white;
+    text-align: center;
+    min-height: 2rem;
+    padding: 1rem 0;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    line-height: 1.6;
+    text-shadow: 
+        0 0 10px rgba(76, 201, 240, 0.8),
+        0 0 20px rgba(76, 201, 240, 0.6),
+        0 0 30px rgba(76, 201, 240, 0.4),
+        0 2px 4px rgba(0, 0, 0, 0.3);
+    animation: floating-text 3s ease-in-out infinite;
+}
+
+/* Action buttons */
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-stop {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.btn-stop:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+}
+
+.btn-discard {
+    background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+    color: white;
+    border: 1px solid rgba(107, 114, 128, 0.3);
+}
+
+.btn-discard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(107, 114, 128, 0.4);
+}
+
+.btn-send {
+    background: linear-gradient(135deg, #4cc9f0 0%, #7209b7 100%);
+    color: white;
+    border: 1px solid rgba(76, 201, 240, 0.3);
+}
+
+.btn-send:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(76, 201, 240, 0.4);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: #e2e8f0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+/* Status section */
+.status-section {
+    position: fixed;
+    bottom: 120px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 800px;
+    z-index: 10;
+}
+
+.status-grid {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    box-shadow: 
+        0 8px 25px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(76, 201, 240, 0.2);
+    border: 1px solid rgba(76, 201, 240, 0.2);
+    animation: floating-status 4s ease-in-out infinite;
+    transition: all 0.3s ease;
+}
+
+.status-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 
+        0 12px 35px rgba(0, 0, 0, 0.4),
+        0 0 30px rgba(76, 201, 240, 0.3);
+}
+
+.status-icon {
+    font-size: 1.5rem;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(76, 201, 240, 0.1);
+    border-radius: 50%;
+    border: 1px solid rgba(76, 201, 240, 0.2);
+    color: #4cc9f0;
+}
+
+.status-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.status-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.status-label {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+.status-value {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    font-weight: 600;
+}
+
+/* Modal styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.modal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #1b1f3b 0%, #0a0f2c 100%);
+    border: 1px solid rgba(76, 201, 240, 0.3);
+    border-radius: 20px;
+    max-width: 90%;
+    max-height: 90%;
+    width: 800px;
+    box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.5),
+        0 0 50px rgba(76, 201, 240, 0.2);
+    transform: scale(0.7);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    backdrop-filter: blur(10px);
+}
+
+.modal.show .modal-content {
+    transform: scale(1);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid rgba(76, 201, 240, 0.2);
+}
+
+.modal-header h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #e2e8f0;
+    margin: 0;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #e2e8f0;
+}
+
+.modal-body {
+    padding: 2rem;
+    overflow-y: auto;
+    flex: 1;
+    max-height: 60vh;
+}
+
+.modal-footer {
+    padding: 1.5rem 2rem;
+    border-top: 1px solid rgba(76, 201, 240, 0.2);
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+/* Results content in modal */
+.modal-body pre {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(76, 201, 240, 0.2);
+    border-radius: 10px;
+    padding: 1.5rem;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    margin: 0;
+    overflow-x: auto;
+    color: #e2e8f0;
+}
+
+/* Loading overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(76, 201, 240, 0.3);
+    border-top: 4px solid #4cc9f0;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+    box-shadow: 0 0 20px rgba(76, 201, 240, 0.3);
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Automatic Mode Indicator */
+.automatic-mode-indicator {
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 15px;
+    padding: 0.75rem 1.5rem;
+    box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+    backdrop-filter: blur(10px);
+    z-index: 10;
+}
+
+.auto-mode-text {
+    color: white;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.auto-mode-timer {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: white;
+}
+
+/* Results Button (Bottom Right Corner) */
+.results-button {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+    animation: slideInFromRight 0.5s ease-out;
+}
+
+.btn-small {
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, #4cc9f0 0%, #7209b7 100%);
+    color: white;
+    border: 1px solid rgba(76, 201, 240, 0.3);
+    box-shadow: 0 8px 25px rgba(76, 201, 240, 0.3);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.btn-small:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(76, 201, 240, 0.4);
+}
+
+@keyframes slideInFromRight {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes floating-text {
+    0%, 100% {
+        transform: translateY(0px);
+        opacity: 0.8;
+    }
+    50% {
+        transform: translateY(-3px);
+        opacity: 1;
+    }
+}
+
+@keyframes floating-status {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+/* Utility classes */
+.hidden {
+    display: none !important;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .headline {
+        font-size: 2rem;
+    }
+    
+    .voice-section {
+        gap: 1.5rem;
+    }
+    
+    .mic-button {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn {
+        width: 100%;
+        max-width: 200px;
+        justify-content: center;
+    }
+    
+    .status-section {
+        bottom: 100px;
+        padding: 0 1rem;
+    }
+    
+    .status-grid {
+        gap: 1rem;
+    }
+    
+    .status-item {
+        padding: 0.75rem 1rem;
+    }
+    
+    .modal-content {
+        width: 95%;
+        max-height: 95%;
+    }
+    
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+        padding: 1rem;
+    }
+    
+    .modal-body pre {
+        font-size: 0.8rem;
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .headline {
+        font-size: 1.5rem;
+    }
+    
+    .voice-section {
+        gap: 1rem;
+    }
+    
+    .status-section {
+        padding: 1.5rem;
+    }
+}
