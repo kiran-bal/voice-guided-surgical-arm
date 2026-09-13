@@ -133,3 +133,7 @@ application/*.egg-info/
 application/.installed.cfg
 application/*.egg
 application/MANIFEST
+
+# Speech model (download separately, see README)
+application/models/
+*.zip

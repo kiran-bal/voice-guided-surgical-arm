@@ -27,6 +27,16 @@ application/
 └── README.md             # This file
 ```
 
+## Speech model
+
+Offline speech recognition uses a [Vosk](https://alphacephei.com/vosk/models) model, which is not stored in this repository. Download and unzip it into `application/models/`:
+
+```bash
+mkdir -p application/models && cd application/models
+curl -LO https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip
+unzip vosk-model-small-en-us-0.15.zip && rm vosk-model-small-en-us-0.15.zip
+```
+
 ## 🚀 Quick Start
 
 ### Prerequisites
