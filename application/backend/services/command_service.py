@@ -18,6 +18,7 @@ class CommandService:
     def __init__(self):
         """Initialize the command service."""
         self.command_map = Config.COMMAND_MAP
+        self.synonyms = dict(getattr(Config, "ACTION_SYNONYMS", {}))
         logger.info(f"✅ Command Service initialized with command map: {self.command_map}")
     
     def map_to_command(self, llm_result: Dict[str, Any], detection: Dict[str, Any]) -> str:
@@ -70,7 +71,7 @@ class CommandService:
             # Check LLM result for action
             action = llm_result.get("action")
             if action:
-                action_lower = action.lower()
+                action_lower = self.normalise_action(action)
                 logger.info(f"🎯 Action detected: {action_lower}")
                 
                 # Map action + object detection combination
@@ -108,8 +109,11 @@ class CommandService:
                     return command
                 
                 else:
-                    # Generic action mapping
-                    base_command = self.command_map.get(action_lower)
+                    # Generic action mapping; honour an "<action>_with_object" variant when one exists
+                    base_command = None
+                    if object_criteria_met:
+                        base_command = self.command_map.get(f"{action_lower}_with_object")
+                    base_command = base_command or self.command_map.get(action_lower)
                     if base_command:
                         command = f"{base_command}{handedness_suffix}"
                         logger.info(f"🎯 Generic action '{action_lower}' → {command}")
@@ -123,6 +127,11 @@ class CommandService:
             logger.error(f"❌ Command mapping error: {e}")
             return "x"  # Default no-op command
     
+    def normalise_action(self, action: str) -> str:
+        """Lower-case and map synonyms (suture -> stitch, hold -> grasp) onto known actions."""
+        key = str(action).strip().lower()
+        return self.synonyms.get(key, key)
+
     def get_command_for_action(self, action: str) -> Optional[str]:
         """
         Get command for a specific action.

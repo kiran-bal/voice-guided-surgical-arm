@@ -85,6 +85,22 @@ class Config:
         "cut_with_object": "e1"
     }
     
+    # Words the LLM (or the surgeon) may use for an action the command map knows.
+    # Measured need: in eval/instructions.jsonl the model answered "suture" and
+    # "hold" for stitch/grasp, which previously fell through to the no-op command.
+    ACTION_SYNONYMS = {
+        "suture": "stitch",
+        "stitching": "stitch",
+        "suturing": "stitch",
+        "sew": "stitch",
+        "hold": "grasp",
+        "grab": "grasp",
+        "grip": "grasp",
+        "incise": "incision",
+        "incisions": "incision",
+        "cutting": "cut",
+    }
+
     @classmethod
     def validate_config(cls) -> None:
         """Validate configuration settings."""

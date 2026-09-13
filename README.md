@@ -1,30 +1,82 @@
-# 🤖 Surgical Assistant - Voice-Controlled Robotic Arm
+# Voice-guided surgical arm
 
-A Flask-based web application for voice-controlled surgical robotic arm assistance. The system processes voice instructions through LLM services, detects objects using computer vision, and sends commands to an ESP32-controlled robotic arm.
+Spoken instruction in, robotic-arm command out. A surgeon says "Sarath, start the incision"; the system transcribes it, asks an LLM to turn it into a structured `{tool, action, handedness}` with the surgeon's profile applied, checks the camera for an object in the pick zone, and sends a two-character command plus handedness suffix to an ESP32 that drives the arm.
 
-## 🏗️ Architecture
+It is a full loop over speech, language, vision and hardware, with the parts that can be measured without a robot measured: the LLM parser is evaluated on a labelled set of spoken instructions, and the command mapper is unit-tested.
+
+## Architecture
+
+```mermaid
+flowchart LR
+    MIC[Browser mic<br/>Web Speech API] -->|transcript| API[Flask /api/process]
+    API --> DOC[detect_doctor<br/>profiles → handedness]
+    DOC --> LLM[LLM parser<br/>OpenAI · Ollama · OpenRouter<br/>JSON schema via pydantic]
+    API --> CAM[Camera service<br/>OpenCV HSV threshold<br/>height + distance gate]
+    LLM --> MAP[Command mapper<br/>action × object × handedness]
+    CAM --> MAP
+    MAP -->|a1r, b0l, d1r, x| ESP[ESP32 over HTTP<br/>servo sequence]
+    ESP --> ARM((Robotic arm))
+```
+
+| Stage | What it does | Where |
+|---|---|---|
+| Speech | Browser Web Speech API streams a transcript; an offline Vosk path exists for no-network use | `frontend/static/js/app.js`, `backend/services/speech_service.py` |
+| Doctor detection | Finds a configured surgeon name in the transcript and looks up handedness | `llm_service.detect_doctor` |
+| LLM parsing | Prompt with rules and examples, JSON-only output, validated into a `ToolAction` model; tolerant of markdown fences and prose | `backend/prompts.py`, `llm_service.parse_tool_action` |
+| Vision | HSV colour mask → largest contour → pixel-to-cm calibration → height and distance tolerance check; or colour-only mode | `backend/services/camera_service.py` |
+| Command mapping | `(action, object_present, handedness)` → ESP32 command; synonyms such as *suture* and *hold* normalised; unknown action → `x` no-op | `backend/services/command_service.py` |
+| Actuation | HTTP call to the ESP32 firmware in `esp32_enhanced/`, which runs the servo sequence for that command | `backend/services/esp32_service.py` |
+
+## Measured behaviour
+
+**LLM parser** (`application/eval/eval_parser.py`, 30 labelled spoken instructions including six speech-to-text corruptions such as "in session" for *incision* and "switching" for *stitching*; local `llama3.1` via Ollama on an Apple M5):
+
+| metric | value |
+|---|---|
+| valid JSON replies | 1.00 |
+| tool accuracy | 0.97 |
+| action accuracy | 1.00 |
+| handedness accuracy | 1.00 |
+| exact match (all three fields) | 0.97 |
+| **correct ESP32 command** | **1.00** |
+| p50 latency | 2.6 s idle GPU (4.7 s while sharing the GPU with a training job) |
+
+The one exact-match failure is "kiran cut here": the label says scissors, the model chose a scalpel. Both are defensible for an unqualified "cut", which is an argument for the prompt to ask for clarification when the tool is ambiguous rather than a parser error.
+
+The gap between `exact_match` and `command_acc` on the first run (0.97 vs 0.87) was the mapper, not the model: the model answered *suture* and *hold* for stitch and grasp, and the mapper only knew the canonical words, so four correct parses became no-op commands. Synonym normalisation in `CommandService` closed that gap; the table above is the run after the fix. That is exactly the kind of failure an end-to-end metric catches and a per-field metric hides.
+
+Re-run with your own model:
+
+```bash
+cd application
+LLM_PROVIDER=ollama LLM_MODEL=llama3.1 python eval/eval_parser.py     # writes eval/results.md
+```
+
+**Vision and actuation** are not measured here; they depend on the physical rig (camera height, lighting, arm geometry) and the numbers would not transfer.
+
+## Tests
+
+```bash
+pip install -r application/requirements.txt pytest
+pytest -q tests        # 28 tests, no model, camera or hardware needed
+```
+
+Covers the full action × object × handedness command matrix, colour-only mode, synonym handling, malformed LLM output, JSON recovery from fenced or chatty replies, and doctor detection. CI runs them on every push.
+
+## Repository layout
 
 ```
 application/
 ├── backend/
-│   ├── app.py              # Main Flask application
-│   ├── routes.py           # API endpoints
-│   ├── config.py           # Configuration management
-│   ├── prompts.py          # LLM prompts and templates
-│   └── services/
-│       ├── __init__.py
-│       ├── llm_service.py      # LLM processing (OpenAI/Ollama/OpenRouter)
-│       ├── camera_service.py   # Object detection (OpenCV)
-│       ├── command_service.py  # Command mapping
-│       └── esp32_service.py    # ESP32 communication
-├── frontend/
-│   ├── index.html          # Main web interface
-│   └── static/
-│       ├── css/styles.css  # Modern UI styling
-│       └── js/app.js       # Voice recognition & API calls
-├── requirements.txt        # Python dependencies
-├── env.example            # Environment variables template
-└── README.md             # This file
+│   ├── app.py, routes.py        Flask app and API
+│   ├── config.py                env-driven settings, doctor profiles, command map, synonyms
+│   ├── prompts.py               parser prompt and variants
+│   └── services/                llm, camera, command, esp32, speech
+├── frontend/                    single-page UI with mic capture
+├── eval/                        instructions.jsonl, eval_parser.py, results.md
+└── requirements.txt
+esp32/, esp32_enhanced/          Arduino firmware for the arm
+tests/                           pytest suite
 ```
 
 ## Speech model

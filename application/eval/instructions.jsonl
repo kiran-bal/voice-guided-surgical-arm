@@ -1,0 +1,30 @@
+{"instruction": "hi sarath, you can start the incision", "tool": "scalpel", "action": "incision", "handedness": "right"}
+{"instruction": "kiran, please stitch the wound", "tool": "scissors", "action": "stitch", "handedness": "left"}
+{"instruction": "sarath, use the forceps to grasp the tissue", "tool": "forceps", "action": "grasp", "handedness": "right"}
+{"instruction": "kiran, make an incision with the scalpel", "tool": "scalpel", "action": "incision", "handedness": "left"}
+{"instruction": "sharath begin the incision now", "tool": "scalpel", "action": "incision", "handedness": "right"}
+{"instruction": "kiran start stitching", "tool": "scissors", "action": "stitch", "handedness": "left"}
+{"instruction": "sarath, we need to cut here with the scissors", "tool": "scissors", "action": "cut", "handedness": "right"}
+{"instruction": "kiran grasp the artery with forceps", "tool": "forceps", "action": "grasp", "handedness": "left"}
+{"instruction": "sarad, proceed with the in session", "tool": "scalpel", "action": "incision", "handedness": "right"}
+{"instruction": "kiran, start switching the wound now", "tool": "scissors", "action": "stitch", "handedness": "left"}
+{"instruction": "sharad please do the insition", "tool": "scalpel", "action": "incision", "handedness": "right"}
+{"instruction": "kiran, start city on the wound", "tool": "scissors", "action": "stitch", "handedness": "left"}
+{"instruction": "okay sarath let's make the first incision", "tool": "scalpel", "action": "incision", "handedness": "right"}
+{"instruction": "kiran can you stitch this up", "tool": "scissors", "action": "stitch", "handedness": "left"}
+{"instruction": "sarath grasp it", "tool": "forceps", "action": "grasp", "handedness": "right"}
+{"instruction": "kiran, cut the suture", "tool": "scissors", "action": "cut", "handedness": "left"}
+{"instruction": "sarath make a small incision above the lesion", "tool": "scalpel", "action": "incision", "handedness": "right"}
+{"instruction": "kiran we will stitch now, pass the scissors", "tool": "scissors", "action": "stitch", "handedness": "left"}
+{"instruction": "sharath, hold the tissue with forceps", "tool": "forceps", "action": "grasp", "handedness": "right"}
+{"instruction": "kiran, incision please", "tool": "scalpel", "action": "incision", "handedness": "left"}
+{"instruction": "sarath, close the wound with stitches", "tool": "scissors", "action": "stitch", "handedness": "right"}
+{"instruction": "kiran cut here", "tool": "scissors", "action": "cut", "handedness": "left"}
+{"instruction": "sarath let's begin the in session on the left side", "tool": "scalpel", "action": "incision", "handedness": "right"}
+{"instruction": "kiran, grab the forceps and grasp", "tool": "forceps", "action": "grasp", "handedness": "left"}
+{"instruction": "sarath the patient is ready, incision", "tool": "scalpel", "action": "incision", "handedness": "right"}
+{"instruction": "kiran, time to stitch", "tool": "scissors", "action": "stitch", "handedness": "left"}
+{"instruction": "sharad use the scalpel to cut the tissue", "tool": "scalpel", "action": "cut", "handedness": "right"}
+{"instruction": "kiran hold this with the forceps", "tool": "forceps", "action": "grasp", "handedness": "left"}
+{"instruction": "sarath, start the incision on the abdomen", "tool": "scalpel", "action": "incision", "handedness": "right"}
+{"instruction": "kiran, suture the incision site", "tool": "scissors", "action": "stitch", "handedness": "left"}

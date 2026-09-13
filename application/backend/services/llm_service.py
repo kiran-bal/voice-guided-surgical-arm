@@ -28,6 +28,33 @@ class ToolAction(BaseModel):
     handedness: Optional[str] = Field(None, description="Handedness (left/right)")
 
 
+def detect_doctor(instruction: str, profiles: Dict[str, Dict[str, str]]) -> Optional[str]:
+    """Return the first configured doctor whose name appears in the instruction."""
+    lowered = instruction.lower()
+    for doctor in profiles:
+        if doctor.lower() in lowered:
+            return doctor
+    return None
+
+
+def extract_json_block(raw: str) -> str:
+    """Strip markdown fences and surrounding prose from an LLM reply, leaving the JSON object."""
+    text = raw.strip()
+    if "```json" in text:
+        text = text.split("```json", 1)[1].split("```", 1)[0]
+    elif "```" in text:
+        text = text.split("```", 1)[1].split("```", 1)[0]
+    start, end = text.find("{"), text.rfind("}")
+    if start != -1 and end != -1 and end > start:
+        text = text[start:end + 1]
+    return text.strip()
+
+
+def parse_tool_action(raw: str) -> ToolAction:
+    """Validate an LLM reply into a ToolAction. Raises ValidationError / JSONDecodeError."""
+    return ToolAction.model_validate_json(extract_json_block(raw))
+
+
 class LLMService:
     """Service for processing surgical instructions using various LLM providers."""
     
@@ -91,12 +118,7 @@ class LLMService:
         try:
             logger.info(f"🔄 Processing instruction: {instruction}")
             
-            # Check for doctor names in instruction
-            detected_doctor = None
-            for doctor in self.doctor_profiles:
-                if doctor.lower() in instruction.lower():
-                    detected_doctor = doctor
-                    break
+            detected_doctor = detect_doctor(instruction, self.doctor_profiles)
             
             if not detected_doctor:
                 logger.warning("⚠️ No doctor detected in instruction")
@@ -116,17 +138,8 @@ class LLMService:
                 "handedness": self.doctor_profiles
             })
             
-            # Extract JSON from response
-            json_str = response.content if hasattr(response, 'content') else str(response)
-            
-            # Clean up JSON string (remove markdown formatting if present)
-            if "```json" in json_str:
-                json_str = json_str.split("```json")[1].split("```")[0].strip()
-            elif "```" in json_str:
-                json_str = json_str.split("```")[1].strip()
-            
-            # Parse and validate
-            result = ToolAction.model_validate_json(json_str)
+            raw = response.content if hasattr(response, 'content') else str(response)
+            result = parse_tool_action(raw)
             
             # Convert to dict
             result_dict = {
